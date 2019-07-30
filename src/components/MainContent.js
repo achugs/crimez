@@ -1,22 +1,25 @@
 import React, { Component } from 'react';
 import Form from './Form';
 import axios from 'axios';
+import CrimeCardz from './CrimeCardz';
+import CrimezChart from './CrimezChart';
 
-class MainComponent extends Component {
+class MainContent extends Component {
   state = {
     date: null,
-    data: null,
+    data: []  ,
     Latitude: null,
-    Longitude: null
-
+    Longitude: null,
+    Loading: false
   }
 
   render() {
     return (
       <main>
         <Form updateDate={this.updateDate} fetchData={this.fetchData} />
-
-
+        {this.state.Loading && <h3>Loading...</h3>}
+        {!this.state.Loading && <CrimezChart />}
+        {!this.state.Loading && <CrimeCardz data={this.state.data} />}
       </main>
     );
   }
@@ -27,7 +30,8 @@ class MainComponent extends Component {
 
   setLocation = () => {
     navigator.geolocation.getCurrentPosition((position) => {
-      this.setState({ Latitude: position.coords.latitude, Longitude: position.coords.longitude })
+      console.log(typeof position.coords.latitude)
+      this.setState({ Latitude: position.coords.latitude.toFixed(2), Longitude: position.coords.longitude.toFixed(2) })
     })
   }
 
@@ -35,14 +39,15 @@ class MainComponent extends Component {
     this.setLocation()
   }
   fetchData = (event) => {
+    this.setState({Loading: true});
     event.preventDefault()
     console.log('there')
     axios.get(`https://data.police.uk/api/crimes-at-location?date=${this.state.date}&lat=${this.state.Latitude}&lng=${this.state.Longitude}`).then((res) => {
       console.log(res, 'here')
-      this.setState({ data: res })
+      this.setState({ data: res.data, Loading: false })
     })
   }
 
 }
 
-export default MainComponent;
+export default MainContent;
