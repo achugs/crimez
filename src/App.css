@@ -1,3 +1,48 @@
 * {
-  color: blue;
+  text-align: center;
+  font-family: 'Pacifico', cursive;
+  font-size: 24px;
+}
+
+.App {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto 1fr;
+  grid-template-areas: "header" "form" "main";
+}
+
+main {
+  background-color: #69696920;
+}
+
+header {
+  grid-area: header;
+  font-size: 60px;
+  color: #000000;
+  background-image: url('https://prod-cdn-crimeandinvestigation-co-uk.s3.amazonaws.com/s3fs-public/crime-bug.jpg');
+  background-size: cover;
+  max-height: 300px;
+}
+
+img {
+  width: 100%;
+  height: 300px;
+}
+
+form {
+  grid-area: form;
+  background-color: #00ff2220;
+}
+
+.crimez {
+  background-color: #ffe70a20;
+  grid-area: main;
+  display: flex;
+  justify-content: space-around;
+}
+
+@media only screen and (max-width: 600px) {
+  .crimez {
+    flex-direction: column;
+  }
 }
