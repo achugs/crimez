@@ -7,7 +7,7 @@ import CrimezChart from './CrimezChart';
 class MainContent extends Component {
   state = {
     date: null,
-    data: []  ,
+    data: [],
     Latitude: null,
     Longitude: null,
     Loading: false
@@ -18,7 +18,7 @@ class MainContent extends Component {
       <main>
         <Form updateDate={this.updateDate} fetchData={this.fetchData} />
         {this.state.Loading && <h3>Loading...</h3>}
-        {!this.state.Loading && <CrimezChart />}
+        {!this.state.Loading && <CrimezChart data={this.state.data} />}
         {!this.state.Loading && <CrimeCardz data={this.state.data} />}
       </main>
     );
@@ -31,7 +31,7 @@ class MainContent extends Component {
   setLocation = () => {
     navigator.geolocation.getCurrentPosition((position) => {
       console.log(typeof position.coords.latitude)
-      this.setState({ Latitude: position.coords.latitude.toFixed(2), Longitude: position.coords.longitude.toFixed(2) })
+      this.setState({ Latitude: position.coords.latitude.toFixed(4), Longitude: position.coords.longitude.toFixed(4) })
     })
   }
 
@@ -39,13 +39,14 @@ class MainContent extends Component {
     this.setLocation()
   }
   fetchData = (event) => {
-    this.setState({Loading: true});
+
+    this.setState({ Loading: true });
     event.preventDefault()
     console.log('there')
     axios.get(`https://data.police.uk/api/crimes-at-location?date=${this.state.date}&lat=${this.state.Latitude}&lng=${this.state.Longitude}`).then((res) => {
       console.log(res, 'here')
       this.setState({ data: res.data, Loading: false })
-    })
+    }).catch((err) => console.log(err, 'here'));
   }
 
 }

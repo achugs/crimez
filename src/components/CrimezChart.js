@@ -1,8 +1,10 @@
 import React from 'react';
-import {RadialChart} from 'react-vis';
+import { RadialChart } from 'react-vis';
+import dataFormatter from '../utils/utils';
 
-const CrimezChart = () => {
-  const myData = [{angle: 2, label: 'dogs'}, {angle: 5, label: 'Alt Label'}, {angle: 3, label: "est"}];
+
+const CrimezChart = (props) => {
+  const myData = dataFormatter(props.data);
   return (
     <div>
       <RadialChart
@@ -10,7 +12,7 @@ const CrimezChart = () => {
         width={400}
         height={400}
         showLabels={true}
-         />
+      />
     </div>
   );
 };
